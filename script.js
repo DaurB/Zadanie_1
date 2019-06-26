@@ -1,7 +1,18 @@
 'use strict'
 
-let money = +prompt("Ваш бюджет на месяц?", ''),
+let money, 
+    time;
+
+function start() {
+    money = +prompt("Ваш бюджет на месяц?", '');
     time = prompt("Введите дату в формате YYYY-MM-DD", '');
+
+    while(isNaN(money) || money == "" || money == null) {
+        money = +prompt("Ваш бюджет на месяц?", '');
+    }
+}
+start();
+
 
 let appData = {
     budget: money,
@@ -9,22 +20,68 @@ let appData = {
     expenses: {},
     optionalExpenses: {},
     income: [],
-    savings: false
+    savings: true
 };
 
 
-for (let i = 0; i < 2; i++) {
-    let a = prompt("Введите обязательную статью расхода в этом месяце", ''),
-    b = prompt("Во сколько ободется?", '');
+function chooseExpensis() {
+    for (let i = 0; i < 2; i++) {
+        let a = prompt("Введите обязательную статью расхода в этом месяце", ''),
+        b = prompt("Во сколько ободется?", '');
+    
+        if ((typeof(a)) === 'string' && (typeof(a)) != null && (typeof(b)) != null 
+            && a != '' && b != '' && a.length < 40) {
+            appData.expenses[a] = b;
+        } else {                            
+            console.log ("bad result");
+            i--;
+        }
+    };
+}
+chooseExpensis();
 
-    if ((typeof(a)) === 'string' && (typeof(a)) != null && (typeof(b)) != null 
-        && a != '' && b != '' && a.length < 40) {
-        appData.expenses[a] = b;
-    } 
-};
+
+function budgetDaily() {
+    appData.moneyPerDate = (appData.budget / 30).toFixed();
+    alert("Ежедневный минимум: " + appData.moneyPerDate);
+}
 
 
+function detectLevel() {      
+    if (appData.moneyPerDate < 100) {
+        console.log("Низкий уровень дохода")
+    } else if (appData.moneyPerDate > 100 && appData.moneyPerDate < 2000) {
+        console.log("Средний уровень дохода")
+    } else if (appData.moneyPerDate > 2000) {
+        console.log("Высокий уровень дохода")
+    } else {
+        console.log("Произошла ошибка")
+    };
+}
+detectLevel();
 
+
+function checkSaving() {
+    if (appData.savings == true) {
+        let save = +prompt("Сумма ваших накопления?"),
+            percent = +prompt("Под какой процент?");
+
+        appData.monthInCome = save/100/12*percent;
+        alert("Ваш ежемесячный доход от накоплений: " + appData.monthInCome);
+    }
+}
+checkSaving();
+
+
+function chooseOptExpenses() {                             // Функция для определения необязательных расходов
+
+    for (let i = 1; i <= 3; i++) {
+        let questionOptExpenses = prompt("Статья необязательных расходов?");
+        appData.optionalExpenses[i] = questionOptExpenses;
+        console.log(appData.optionalExpenses);
+    }
+}
+chooseOptExpenses();
 // let i = 0;
 // while (i < 2) {
 //     let a = prompt("Введите обязательную статью расхода в этом месяце", ''),
@@ -49,66 +106,10 @@ for (let i = 0; i < 2; i++) {
 // } 
 // while (i <2);
 
-appData.moneyPerDate = appData.budget / 30;
-
-alert("Ежедневный минимум: " + appData.moneyPerDate);
-
-
-if (appData.moneyPerDate < 100) {
-    console.log("Низкий уровень дохода")
-} else if (appData.moneyPerDate > 100 && appData.moneyPerDate < 2000) {
-    console.log("Средний уровень дохода")
-} else if (appData.moneyPerDate > 2000) {
-    console.log("Высокий уровень дохода")
-} else {
-    console.log("Произошла ошибка")
-};
 
 
 
 
 
 
-// if (num == 49) {
-//     console.log("Неверно")
-// } else if (num > 100) {
-//     console.log("Много")
-// } else {
-//     console.log("Верно")
-// };
 
-// switch (num) {
-//     case num > 100:
-//         console.log("Много");
-//         break;
-//     case num < 10:
-//         console.log("Мало");
-//         break;
-//     case 50:
-//         console.log("Верно");
-//         break;
-//     default:
-//         console.log("blabla");
-//         break;
-// };
-
-
-// let num = 50;
-// while (num < 55) {
-//     console.log(num);
-//     num++;
-// }
-
-// do {
-//     console.log(num);
-//     num++
-// } 
-// while (num < 60);
-
-
-// for (let i = 1; i < 10; i++) {
-//     if (i == 4) {
-//         continue
-//     }
-//     console.log(i)
-// }
